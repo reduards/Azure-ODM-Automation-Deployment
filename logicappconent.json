@@ -1,0 +1,87 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Response": {
+                "inputs": {
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {},
+                "type": "Response"
+            },
+            "Send_an_email_(V2)": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>@{triggerBody()?['status']}<br>\n<br>\nProject Name: @{triggerBody()?['project_name']}<br>\nDate Created: @{triggerBody()?['date_created']}<br>\nProcessing Time (in seconds): @{triggerBody()?['processing_time_seconds']}<br>\nCost: @{triggerBody()?['cost']}<br>\nNumber of Images: @{triggerBody()?['image_count']}<br>\nJob Options: @{triggerBody()?['job_options']}<br>\n</p>",
+                        "Subject": "@triggerBody()?['status']",
+                        "To": "emailaddress@here.com"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "method": "POST",
+                    "schema": {
+                        "properties": {
+                            "cost": {
+                                "type": "string"
+                            },
+                            "date_created": {
+                                "type": "string"
+                            },
+                            "image_count": {
+                                "type": "string"
+                            },
+                            "job_options": {
+                                "type": "string"
+                            },
+                            "processing_time_seconds": {
+                                "type": "string"
+                            },
+                            "project_name": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "office365": {
+                    "connectionId": "/subscriptions/{subscription id here}/resourceGroups/{resourcegroup here}/providers/Microsoft.Web/connections/office365",
+                    "connectionName": "office365",
+                    "id": "/subscriptions/{subscription id here}/providers/Microsoft.Web/locations/{location here}/managedApis/office365"
+                }
+            }
+        }
+    }
+}
