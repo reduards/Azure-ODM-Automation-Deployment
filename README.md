@@ -1,6 +1,6 @@
 # Azure-ODM-Automation-Deployment
 
-This repo contains an az cli script to deploy all the infrastructure and neccasary components to automate the process of generating Orthophotos and 3d-modells from drone images using https://github.com/OpenDroneMap/ODM and Azure Compute. The function that orchestrate the actual processing job is allocated at:
+This repo contains an az cli script to deploy all the infrastructure and neccasary components to automate the process of generating Orthophotos and 3d-modells from drone images using https://github.com/OpenDroneMap/ODM and Azure Compute. It will also populate the file storage with some test images found in this repo at /images. The function that orchestrate the actual processing job is allocated at:
 https://github.com/reduards/Azure-ODM-Automation-Function
 
 How to get going:
@@ -28,6 +28,16 @@ This will hook up your Azure Function App with functions from the repo and will 
 9. Finally add a secret to the Azure Key Vault called "function key" which you will find "Azure Function"-->"drone-httpstarter"-->"Function Key" or by running the az cli command:
 
 az functionapp function keys list -g RESOURCEGROUPNAME -n AZUREFUNCTIONNAME --function-name drone-httpstarter --query 'default' -o tsv
+
+You should now be able to call the function by usig the api:
+
+https://AZUREFUNCTIONNAME.azurewebsites.net/api/orchestrators/drone-orchestrator-upload?code=FUNCTIONKEY==&vmSize=COMPUTEVM&projectName=PROJECTNAME&projectDate=PROJECTDATE
+
+Example of Compute VM Standard_NC24s_v2
+
+Make sure to structure the folder in following structure:
+
+fileshare/projectname/projectname_projectdate
 
 ---
 
