@@ -1,3 +1,5 @@
+# Azure-ODM-Automation-Deployment
+
 This repo contains an az cli script to deploy all the infrastructure and neccasary components to automate the process of generating Orthophotos and 3d-modells from drone images using https://github.com/OpenDroneMap/ODM and Azure Compute. The function that orchestrate the actual processing job is allocated at:
 https://github.com/reduards/Azure-ODM-Automation-Function
 
